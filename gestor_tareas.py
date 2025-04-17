@@ -1,11 +1,12 @@
 import json
 
 class Tarea:
-    def __init__(self, descripcion, prioridad):
+    def __init__(self, nombre, descripcion, prioridad):
+        self.nombre = nombre
         self.descripcion = descripcion
         self.prioridad = prioridad
         self.estado = "incompleta"
-
+    
     def marcar_como_en_proceso(self):
         self.estado = "en proceso"
 
@@ -17,15 +18,15 @@ class GestorTareas:
     def __init__(self):
         self.tareas = []
 
-    def agregar_tarea(self, descripcion, prioridad):
-        nueva_tarea = Tarea(descripcion, prioridad)
+    def agregar_tarea(self, nombre, descripcion, prioridad):
+        nueva_tarea = Tarea(nombre, descripcion, prioridad)
         self.tareas.append(nueva_tarea)
 
     def listar_tareas(self):
         if not self.tareas:
             print("No hay tareas registradas.")
         for i, tarea in enumerate(self.tareas):
-            print(f"{i}. {tarea.descripcion} ({tarea.prioridad}) - {tarea.estado}")
+            print(f"{i}. {tarea.nombre} - {tarea.descripcion} ({tarea.prioridad}) - {tarea.estado}")
 
     def marcar_completada(self, indice):
         if 0 <= indice < len(self.tareas):
@@ -48,7 +49,7 @@ class GestorTareas:
     def guardar_tareas(self, archivo="GestorDeTareas/tareas.json"):
         with open(archivo, "w", encoding="utf-8") as f:
             datos = [
-                {
+                {   "nombre": t.nombre,
                     "descripcion": t.descripcion,
                     "prioridad": t.prioridad,
                     "estado": t.estado
@@ -83,9 +84,10 @@ while True:
     opcion = input("Selecciona una opción (1-6): ")
 
     if opcion == "1":
+        nombre = input("Cual es el nombre de la tarea??: ")
         descripcion = input("Descripción de la tarea: ")
         prioridad = input("Prioridad (alta/media/baja): ")
-        gestor.agregar_tarea(descripcion, prioridad)
+        gestor.agregar_tarea(nombre, descripcion, prioridad)
 
     elif opcion == "2":
         gestor.listar_tareas()
